@@ -2,6 +2,10 @@
 
 ## 使用指引
 
+先看一下运行效果~~
+
+![](doc/images/450.gif)
+
 ### 使用前提
 
 windows小程序运行环境需要Microsoft WebView2支持。
