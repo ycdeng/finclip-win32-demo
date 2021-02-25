@@ -94,7 +94,7 @@ Windows版本FinClip运行时一共有4个文件。
 <a name="l352x"></a>
 ## ⛳️ 获得更多指引
 ✅ 部署一套私有化社区版：[https://www.finclip.com/mop/document/quickstart/Community-Edition.html](https://www.finclip.com/mop/document/quickstart/Community-Edition.html)<br />✅ 
-[了解API接口FinClipSDK WindowsAPI](https://docs.finogeeks.club/docs/finclip-win32/)<br />
+了解API接口[FinClipSDK WindowsAPI](https://docs.finogeeks.club/docs/finclip-win32/)<br />
 
 <a name="9K1zU"></a>
 ## ☎️ 与我们联系
