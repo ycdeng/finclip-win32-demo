@@ -65,7 +65,7 @@ Windows版本FinClip运行时一共有4个文件。
 
 ### 查看API文档
 
-[FinClipSDK WindowsAPI](https://docs.finogeeks.club/docs/finclip-win32/)
+[FinClipSDK WindowsAPI](https://docs.finogeeks.club/docs/finclip-win32/){target="_blank"}
 
 ## 📚 想要通关全程？这里是全程攻略
 直接跑demo虽然快，不过快速通关总会留下各种遗憾。<br />来吧，跟随全程攻略，了解一下“让App运行小程序”的全貌吧：
