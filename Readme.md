@@ -11,6 +11,8 @@
 windows小程序运行环境需要Microsoft WebView2支持。
 可以从[这里下载最新版本webview2运行库](https://developer.microsoft.com/zh-cn/microsoft-edge/webview2/#download-section)安装后即可以使用。
 
+开发工具建议使用Visual Studio 2019版本。
+
 ### 集成SDK
 Windows版本FinClip运行时一共有4个文件。
 
