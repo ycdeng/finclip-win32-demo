@@ -9,19 +9,19 @@
 
 #define MAX_LOADSTRING 100
 using namespace std;
-// Global Variables:
+
 HINSTANCE hInst;
 HWND gHwnd;// current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
-// Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 HWND hWnd_appkey;
 HWND hWnd_secret;
 HWND hWnd_appid;
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,
@@ -30,14 +30,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	// TODO: Place code here.
-
-	// Initialize global strings
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
 	LoadStringW(hInstance, IDC_FINCLIP, szWindowClass, MAX_LOADSTRING);
 	MyRegisterClass(hInstance);
 
-	// Perform application initialization:
 	if (!InitInstance(hInstance, nCmdShow))
 	{
 		return FALSE;
@@ -47,7 +43,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	MSG msg;
 
-	// Main message loop:
 	while (GetMessage(&msg, nullptr, 0, 0))
 	{
 		if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
@@ -60,11 +55,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	return (int)msg.wParam;
 }
 
-//
-//  FUNCTION: MyRegisterClass()
-//
-//  PURPOSE: Registers the window class.
-//
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
 	WNDCLASSEXW wcex;
@@ -101,7 +91,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	hInst = hInstance; // Store instance handle in our global variable
 	DWORD dwStyle = WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX; //设置窗体样式 
 
-	HWND hWnd = CreateWindowW(szWindowClass, szTitle, (WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_DLGFRAME) & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX,
+	HWND hWnd = CreateWindowW(szWindowClass, szTitle, (WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME) & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX,
 		CW_USEDEFAULT, 0, 500, 650, nullptr, nullptr, hInstance, nullptr);
 
 	if (!hWnd)
@@ -114,17 +104,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 	return TRUE;
 }
-
-//
-//  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  PURPOSE: Processes messages for the main window.
-//
-//  WM_COMMAND  - process the application menu
-//  WM_PAINT    - Paint the main window
-//  WM_DESTROY  - post a quit message and return
-//
-//
 
 std::string utf8_encode(const std::wstring& wstr, int CP = CP_UTF8)
 {
@@ -163,7 +142,7 @@ void init_finclipsdk(int server_type,std::wstring wappkey,std::wstring wsecret) 
 
 
 void finclip_applet_callback(int ret,const char*) {
-	//MessageBox(nullptr, L"oooo", L"title", 0);
+
 }
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -205,64 +184,56 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			packer->Release();
 		}
 		break;
-	case WM_PAINT:
-		//{
-		//    PAINTSTRUCT ps;
-		//    HDC hdc = BeginPaint(hWnd, &ps);
-		//    // TODO: Add any drawing code that uses hdc here...
-		//    EndPaint(hWnd, &ps);
-		//}
-		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
 	case WM_CREATE:
 	{
 		 CreateWindowW(
-			L"static",  //静态文本框的类名
-			L"AppKEY",  //控件的文本
-			WS_CHILD /*子窗口*/ | WS_VISIBLE /*创建时显示*/ | WS_BORDER /*带边框*/,
-			20, 20, 60, 30,  hWnd/*父窗口句柄*/,
-			(HMENU)1,  //为控件指定一个唯一标识符
-			((LPCREATESTRUCT)lParam)->hInstance,  //当前实例句柄
+			L"static",   
+			L"AppKEY",  
+			WS_CHILD  | WS_VISIBLE,
+			20, 20, 60, 30,  hWnd ,
+			(HMENU)1,  
+			((LPCREATESTRUCT)lParam)->hInstance, 
 			NULL
 		);
 
 		CreateWindowW(
-			L"static",  //静态文本框的类名
-			L"Secret",  //控件的文本
-			WS_CHILD /*子窗口*/ | WS_VISIBLE /*创建时显示*/ | WS_BORDER /*带边框*/,
-			20, 60, 60, 30, hWnd/*父窗口句柄*/,
-			(HMENU)2,  //为控件指定一个唯一标识符
-			((LPCREATESTRUCT)lParam)->hInstance,  //当前实例句柄
+			L"static", 
+			L"Secret", 
+			WS_CHILD | WS_VISIBLE ,
+			20, 60, 60, 30, hWnd ,
+			(HMENU)2,  
+			((LPCREATESTRUCT)lParam)->hInstance,  
 			NULL
 		);
 
 		CreateWindowW(
-			L"static",  //静态文本框的类名
-			L"appid",  //控件的文本
-			WS_CHILD /*子窗口*/ | WS_VISIBLE /*创建时显示*/ | WS_BORDER /*带边框*/,
-			20, 100, 60, 30, hWnd/*父窗口句柄*/,
-			(HMENU)2,  //为控件指定一个唯一标识符
-			((LPCREATESTRUCT)lParam)->hInstance,  //当前实例句柄
+			L"static",  
+			L"appid",  
+			WS_CHILD  | WS_VISIBLE,
+			20, 100, 60, 30, hWnd ,
+			(HMENU)2, 
+			((LPCREATESTRUCT)lParam)->hInstance, 
 			NULL
 		);
 		hWnd_appkey = CreateWindowW( L"EDIT", L"22LyZEib0gLTQdU3MUauAfJ/xujwNfM6OvvEqQyH4igA",
 			WS_VISIBLE | WS_CHILD | WS_BORDER | ES_LEFT,
-			100, 20, 250, 30,
+			100, 20, 300, 30,
 			hWnd,
 			(HMENU)IDM_APPLET_APPKEY, ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
 
 		hWnd_secret = CreateWindowW(L"EDIT", L"703b9026be3d6bc5",
 			WS_VISIBLE | WS_CHILD | WS_BORDER | ES_LEFT,
-			100, 60, 250, 30,
+			100, 60, 300, 30,
 			hWnd,
 			(HMENU)IDM_APPLET_SECRET, ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
 		hWnd_appid = CreateWindowW(L"EDIT", L"5ea0401463cb900001d73865",
 			WS_VISIBLE | WS_CHILD | WS_BORDER | ES_LEFT,
-			100, 100, 250, 30,
+			100, 100, 300, 30,
 			hWnd,
 			(HMENU)IDM_APPLET_APPID, ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
@@ -270,16 +241,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 		HWND hwndButton = CreateWindowW(
-			L"BUTTON",  // Predefined class; Unicode assumed 
-			L"打开小程序",      // Button text 
-			WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,  // Styles 
-			100,         // x position 
-			250,         // y position 
-			200,        // Button width
-			50,        // Button height
-			hWnd,     // Parent window
-			(HMENU)IDM_START_APPLET,       // No menu.
-			((LPCREATESTRUCT)lParam)->hInstance,//(HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), //hInst,
+			L"BUTTON", 
+			L"打开小程序",  
+			WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,  
+			100,      
+			250,    
+			200,     
+			50,    
+			hWnd,    
+			(HMENU)IDM_START_APPLET,   
+			((LPCREATESTRUCT)lParam)->hInstance, 
 			NULL);
 
 	}
