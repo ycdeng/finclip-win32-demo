@@ -129,7 +129,6 @@ void init_finclipsdk(int app_store, std::wstring wappkey, std::wstring wsecret) 
 	std::string appkey = utf8_encode(wappkey);
 	std::string secret = utf8_encode(wsecret);
 
-
 	IFinConfigPacker* configpacker = NewFinConfigPacker();
 	IFinConfig* config = configpacker->NewConfig();
 	config->SetAppStore(app_store);
@@ -139,6 +138,7 @@ void init_finclipsdk(int app_store, std::wstring wappkey, std::wstring wsecret) 
 	config->SetDomain("https://api.finclip.com");
 	config->SetEncryptType(1);
 	config->SetFinger("");
+
 	configpacker->AddConfig(config);
 	Initialize(hInst, configpacker);
 	is_initialized = TRUE;
@@ -177,17 +177,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				MessageBox(NULL, L"请输入appid", L"提示", 0);
 				return 0;
 			}
-			int server_type = 1;
-			init_finclipsdk(server_type, wappkey, wsecret);
+			int appstore = 1;
+			init_finclipsdk(appstore, wappkey, wsecret);
 			IFinPacker* packer = NewFinPacker();
 			packer->BeginPacker();
 			packer->Add("appId", utf8_encode(wappid).c_str());
 			packer->Add("query", "1");
 			packer->EndPacker();
-			unsigned char ret[1024] = { 0 };
-			int len = 1024;
+			int len = packer->GetBufferSize() + 1;
+			unsigned char* ret = new unsigned char[len];
+			memset(ret, 0, len);
 			packer->Dump(ret, &len);
-			StartApplet(server_type, utf8_encode(wappid).c_str(), packer, finclip_applet_callback);
+			delete[] ret;
+			StartApplet(appstore, utf8_encode(wappid).c_str(), packer, finclip_applet_callback);
 			packer->Release();
 		}
 		break;

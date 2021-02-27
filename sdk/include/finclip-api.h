@@ -41,11 +41,42 @@ struct IKnown
 struct IFinPacker : public IKnown
 {
 public:
+	/**
+	 * @brief 打包准备
+	 */
 	virtual void BeginPacker() = 0;
+	/**
+	 * @brief 往数据包增加内容
+	 * @detail 分别为KEY,VALUE
+	 *
+	 * @param field 数据字段
+	 * @param value 数据值
+	 * @return 0成功，1失败
+	 */
 	virtual void Add(const char* field, const char* value) = 0;
+	/**
+	 * @brief 结束打包
+	 */
 	virtual void EndPacker() = 0;
+
+	/**
+	 * @brief 释放打包器
+	 */
 	virtual void Release() = 0;
-	virtual void Dump(unsigned char*, int*) = 0;
+
+	/**
+	 * @brief 取数据缓冲大小
+	 * @return 返回数据缓冲大小
+	 */
+	virtual int GetBufferSize() = 0;
+
+	/**
+	 * @brief 导出数据缓冲
+	 * @param buffer 存放数据缓冲，由调用方预申请空间
+	 * @param size   存放数据缓冲长度
+	 * @return 0成功，1失败
+	 */
+	virtual int Dump(unsigned char* buffer, int* size) = 0;
 };
 
 ///配置信息接口
