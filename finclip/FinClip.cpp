@@ -145,7 +145,7 @@ void init_finclipsdk(int app_store, std::wstring wappkey, std::wstring wsecret) 
 }
 
 
-void finclip_applet_callback(int ret, const char*) {
+void finclip_applet_callback(int ret, IEvent*) {
 
 }
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -181,9 +181,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			init_finclipsdk(server_type, wappkey, wsecret);
 			IFinPacker* packer = NewFinPacker();
 			packer->BeginPacker();
-			packer->AddField("appId");
-			packer->AddValue("appId");
+			packer->Add("appId", utf8_encode(wappid).c_str());
+			packer->Add("query", "1");
 			packer->EndPacker();
+			unsigned char ret[1024] = { 0 };
+			int len = 1024;
+			packer->Dump(ret, &len);
 			StartApplet(server_type, utf8_encode(wappid).c_str(), packer, finclip_applet_callback);
 			packer->Release();
 		}

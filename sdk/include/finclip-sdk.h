@@ -69,17 +69,39 @@
 
 extern "C"
 {
+	/**
+	 * @brief 初始化SDI信息
+	 * @detail 只需要初始化一次
+	 *
+	 * @param hinstance 应用实例句柄
+	 * @param configpacker 配置打包器
+	 * @return 0成功，1失败
+	 */
 	DLL_EXPORT int FINSTDMETHODCALLTYPE Initialize(HINSTANCE hinstance, IFinConfigPacker* configpacker);
+	/**
+	 * @brief 获取数据打包器
+	 * @detail 获取数据打包器实例
+	 *
+	 * @return 返回数据打包器实例
+	 */
 	DLL_EXPORT IFinPacker* FINSTDMETHODCALLTYPE NewFinPacker();
+	/**
+	 * @brief 获取配置打包器
+	 * @detail 获取配置打包器实例
+	 *
+	 * @return 返回配置打包器实例
+	 */
 	DLL_EXPORT IFinConfigPacker* FINSTDMETHODCALLTYPE NewFinConfigPacker();
 
 	///小程序Api
 	/**打开小程序
 	*
-	*
+	* @param appstore 应用市场类型，需要与配置信息里面设置的应用市场一致
 	* @param appId 小程序appId
-	* @return 1表示成功，0表示失败
+	* @param param 打开参数
+	* @param callback 打开小程序回调
+	* @return 0表示成功，1表示失败
 	*/
-	DLL_EXPORT int  FINSTDMETHODCALLTYPE StartApplet(int apptype,const char* appid, IFinPacker* param, FinClipSDKCallback callback);
+	DLL_EXPORT int  FINSTDMETHODCALLTYPE StartApplet(int appstore, const char* appid, IFinPacker* param, FinClipSDKCallback callback);
 }
 #endif // !_H_FINCLIPSDK_H_
