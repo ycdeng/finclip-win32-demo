@@ -1,11 +1,9 @@
-// FinClip.cpp : Defines the entry point for the application.
+ï»¿// FinClip.cpp : Defines the entry point for the application.
 //
 #include "framework.h"
 #include "FinClip.h"
 #include "finclip-sdk.h"
 #include<iostream>
-
-#pragma comment(lib, "FinClipSDK.lib")
 
 #define MAX_LOADSTRING 100
 using namespace std;
@@ -21,7 +19,7 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 HWND hWnd_appkey;
 HWND hWnd_secret;
 HWND hWnd_appid;
-
+BOOL is_initialized = FALSE;
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,
@@ -89,7 +87,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	hInst = hInstance; // Store instance handle in our global variable
-	DWORD dwStyle = WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX; //ÉèÖÃ´°ÌåÑùÊ½ 
+	DWORD dwStyle = WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX; //è®¾ç½®çª—ä½“æ ·å¼ 
 
 	HWND hWnd = CreateWindowW(szWindowClass, szTitle, (WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME) & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX,
 		CW_USEDEFAULT, 0, 500, 650, nullptr, nullptr, hInstance, nullptr);
@@ -123,25 +121,31 @@ std::wstring utf8_decode(const std::string& str, int CP = CP_UTF8)
 	MultiByteToWideChar(CP, 0, &str[0], (int)str.size(), &wstrTo[0], size_needed);
 	return wstrTo;
 }
-void init_finclipsdk(int server_type,std::wstring wappkey,std::wstring wsecret) {
+void init_finclipsdk(int app_store, std::wstring wappkey, std::wstring wsecret) {
+	if (is_initialized) {
+		return;
+	}
+
 	std::string appkey = utf8_encode(wappkey);
 	std::string secret = utf8_encode(wsecret);
-	FinConfig config = {
-		server_type,
-		"https://api.finclip.com",
-		"/api/v1/mop",
-		appkey.c_str(),
-		secret.c_str(),
-		"",
-		1
-	};
+
+
 	IFinConfigPacker* configpacker = NewFinConfigPacker();
+	IFinConfig* config = configpacker->NewConfig();
+	config->SetAppStore(app_store);
+	config->SetApiPrefix("/api/v1/mop");
+	config->SetAppKey(appkey.c_str());
+	config->SetSecret(secret.c_str());
+	config->SetDomain("https://api.finclip.com");
+	config->SetEncryptType(1);
+	config->SetFinger("");
 	configpacker->AddConfig(config);
 	Initialize(hInst, configpacker);
+	is_initialized = TRUE;
 }
 
 
-void finclip_applet_callback(int ret,const char*) {
+void finclip_applet_callback(int ret, const char*) {
 
 }
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -162,19 +166,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			std::wstring wsecret(secret);
 			std::wstring wappid(appid);
 			if (wappkey.length() == 0) {
-				MessageBox(NULL, L"ÇëÊäÈëappKey", L"ÌáÊ¾", 0);
+				MessageBox(NULL, L"è¯·è¾“å…¥appKey", L"æç¤º", 0);
 				return 0;
 			}
 			if (wsecret.length() == 0) {
-				MessageBox(NULL, L"ÇëÊäÈëSecret", L"ÌáÊ¾", 0);
+				MessageBox(NULL, L"è¯·è¾“å…¥Secret", L"æç¤º", 0);
 				return 0;
 			}
 			if (wappid.length() == 0) {
-				MessageBox(NULL, L"ÇëÊäÈëappid", L"ÌáÊ¾", 0);
+				MessageBox(NULL, L"è¯·è¾“å…¥appid", L"æç¤º", 0);
 				return 0;
 			}
 			int server_type = 1;
-			init_finclipsdk(server_type,wappkey, wsecret);
+			init_finclipsdk(server_type, wappkey, wsecret);
 			IFinPacker* packer = NewFinPacker();
 			packer->BeginPacker();
 			packer->AddField("appId");
@@ -189,36 +193,36 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_CREATE:
 	{
-		 CreateWindowW(
-			L"static",   
-			L"AppKEY",  
-			WS_CHILD  | WS_VISIBLE,
-			20, 20, 60, 30,  hWnd ,
-			(HMENU)1,  
-			((LPCREATESTRUCT)lParam)->hInstance, 
+		CreateWindowW(
+			L"static",
+			L"AppKEY",
+			WS_CHILD | WS_VISIBLE,
+			20, 20, 60, 30, hWnd,
+			(HMENU)1,
+			((LPCREATESTRUCT)lParam)->hInstance,
 			NULL
 		);
 
 		CreateWindowW(
-			L"static", 
-			L"Secret", 
-			WS_CHILD | WS_VISIBLE ,
-			20, 60, 60, 30, hWnd ,
-			(HMENU)2,  
-			((LPCREATESTRUCT)lParam)->hInstance,  
+			L"static",
+			L"Secret",
+			WS_CHILD | WS_VISIBLE,
+			20, 60, 60, 30, hWnd,
+			(HMENU)2,
+			((LPCREATESTRUCT)lParam)->hInstance,
 			NULL
 		);
 
 		CreateWindowW(
-			L"static",  
-			L"appid",  
-			WS_CHILD  | WS_VISIBLE,
-			20, 100, 60, 30, hWnd ,
-			(HMENU)2, 
-			((LPCREATESTRUCT)lParam)->hInstance, 
+			L"static",
+			L"appid",
+			WS_CHILD | WS_VISIBLE,
+			20, 100, 60, 30, hWnd,
+			(HMENU)2,
+			((LPCREATESTRUCT)lParam)->hInstance,
 			NULL
 		);
-		hWnd_appkey = CreateWindowW( L"EDIT", L"22LyZEib0gLTQdU3MUauAfJ/xujwNfM6OvvEqQyH4igA",
+		hWnd_appkey = CreateWindowW(L"EDIT", L"22LyZEib0gLTQdU3MUauAfJ/xujwNfM6OvvEqQyH4igA",
 			WS_VISIBLE | WS_CHILD | WS_BORDER | ES_LEFT,
 			100, 20, 300, 30,
 			hWnd,
@@ -241,16 +245,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 		HWND hwndButton = CreateWindowW(
-			L"BUTTON", 
-			L"´ò¿ªÐ¡³ÌÐò",  
-			WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,  
-			100,      
-			250,    
-			200,     
-			50,    
-			hWnd,    
-			(HMENU)IDM_START_APPLET,   
-			((LPCREATESTRUCT)lParam)->hInstance, 
+			L"BUTTON",
+			L"æ‰“å¼€å°ç¨‹åº",
+			WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
+			100,
+			250,
+			200,
+			50,
+			hWnd,
+			(HMENU)IDM_START_APPLET,
+			((LPCREATESTRUCT)lParam)->hInstance,
 			NULL);
 
 	}

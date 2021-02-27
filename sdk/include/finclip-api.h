@@ -1,4 +1,4 @@
-/*******************************************************
+﻿/*******************************************************
 * @file  finclip-api.h
 * @brief
 * @details
@@ -18,9 +18,7 @@
 **********************************************************************************/
 #ifndef __H_FINCLIPAPI_H__
 #define __H_FINCLIPAPI_H__
-
 #include <windows.h>
-
 #ifdef _WIN32
 #ifndef FINSTDMETHODCALLTYPE
 #define FINSTDMETHODCALLTYPE __stdcall
@@ -61,31 +59,40 @@ public:
 	virtual void Release() = 0;
 };
 
-struct FinConfig
+struct IFinConfig
 {
 public:
-	int apptype;
-	const char* domain;
-	const char* apiprefix;
-	const char* appkey;
-	const char* secret;
-	const char* fingerprint;
-	int         encrypt_type; //加密类型 0: AES 1:国密
+	virtual void SetAppStore(int app_store) = 0;
+	virtual void SetEncryptType(int encrypt_type) = 0;
+	virtual void SetDomain(const char* domain) = 0;
+	virtual void SetApiPrefix(const char* apiprefix) = 0;
+	virtual void SetAppKey(const char* appkey) = 0;
+	virtual void SetSecret(const char* secret) = 0;
+	virtual void SetFinger(const char* finger) = 0;
+
+	virtual int GetAppStore() = 0;
+	virtual int GetEncryptType() = 0;
+	virtual const char* GetDomain() = 0;
+	virtual const char* GetApiPrefix() = 0;
+	virtual const char* GetAppKey() = 0;
+	virtual const char* GetSecret() = 0;
+	virtual const char* GetFinger() = 0;
 };
 struct IFinConfigPacker : public IKnown
 {
 public:
-	virtual int AddConfig(FinConfig config) = 0;
-	virtual FinConfig GetConfig(int type) = 0;
+	virtual IFinConfig* NewConfig() = 0;
+	virtual int AddConfig(IFinConfig* config) = 0;
+	virtual IFinConfig* GetConfig(int type) = 0;
 	virtual int GetConfigSize() = 0;
-	virtual FinConfig GetConfigByIndex(int index) = 0;
+	virtual IFinConfig* GetConfigByIndex(int index) = 0;
 
 };
 //函数指针回调
 /**
  * @params ret 调用结果 0成功,1失败
  * @params data 返回结果 {}
- * 
+ *
  */
-typedef void(*FinClipSDKCallback)(int,const char*);
+typedef void(*FinClipSDKCallback)(int, const char*);
 #endif // !__H_FINCLIPAPI_H__
