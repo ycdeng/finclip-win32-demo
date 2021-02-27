@@ -18,7 +18,6 @@
 **********************************************************************************/
 #ifndef __H_FINCLIPAPI_H__
 #define __H_FINCLIPAPI_H__
-#include <windows.h>
 #ifdef _WIN32
 #ifndef FINSTDMETHODCALLTYPE
 #define FINSTDMETHODCALLTYPE __stdcall
