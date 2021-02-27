@@ -33,20 +33,8 @@
 #define FIN_OK   0
 #define FIN_FAIL 1
 
-///各类接口统一的查询与引用接口，所有插件提供的接口都要实现 IKnown (参照COM标准)
 struct IKnown
 {
-	///接口查询
-	/**查询与当前接口相关的其他接口，例如可以查到 IIoC, IManager 等
-	 *@param HS_SID  iid  接口全局唯一标识
-	 *@param IKnown **ppv 返回iid对应的接口指针
-	 *@return I_OK 成功，I_NONE 未查到iid 相应接口
-	 */
-	 //virtual unsigned long  FUNCTION_CALL_MODE QueryInterface(HS_SID iid, IKnown** ppv) = 0;
-	 ///引用接口，引用计数加一(多线程引用时，方法实现代码里要对计数值加锁后修改)
-	 //virtual unsigned long  FUNCTION_CALL_MODE AddRef() = 0;
-	 ///释放接口，引用计数减一，计数为0时释放接口的实现对象(多线程引用时，方法实现代码里要对计数值加锁加锁后修改)
-	 //virtual unsigned long  FUNCTION_CALL_MODE Release() = 0;
 };
 
 struct IFinPacker : public IKnown
