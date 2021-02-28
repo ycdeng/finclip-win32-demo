@@ -203,6 +203,26 @@ public:
 	virtual const char* GetErrorInfo() = 0;
 	virtual const char* GetBody() = 0;
 };
+
+struct IPackerFactory : public IKnown {
+public:
+
+	/**
+	 * @brief 获取配置打包器
+	 * @detail 获取配置打包器实例
+	 *
+	 * @return 返回配置打包器实例
+	 */
+	virtual IFinConfigPacker* GetFinConfigPacker() = 0;
+
+	/**
+	 * @brief 获取数据打包器
+	 * @detail 获取数据打包器实例
+	 *
+	 * @return 返回数据打包器实例
+	 */
+	virtual IFinPacker* GetFinPacker() = 0;
+};
 //函数指针回调
 /**
  * @params ret 调用结果 0成功,1失败

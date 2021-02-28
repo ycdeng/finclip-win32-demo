@@ -129,7 +129,8 @@ void init_finclipsdk(int app_store, std::wstring wappkey, std::wstring wsecret) 
 	std::string appkey = utf8_encode(wappkey);
 	std::string secret = utf8_encode(wsecret);
 
-	IFinConfigPacker* configpacker = NewFinConfigPacker();
+	IPackerFactory* factory = GetPackerFactory();
+	IFinConfigPacker* configpacker = factory->GetFinConfigPacker();
 	IFinConfig* config = configpacker->NewConfig();
 	config->SetAppStore(app_store);
 	config->SetApiPrefix("/api/v1/mop");
@@ -178,8 +179,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				return 0;
 			}
 			int appstore = 1;
-			init_finclipsdk(appstore, wappkey, wsecret);
-			IFinPacker* packer = NewFinPacker();
+			IPackerFactory* factory = GetPackerFactory();
+			IFinPacker* packer = factory->GetFinPacker();
 			packer->BeginPacker();
 			packer->Add("appId", utf8_encode(wappid).c_str());
 			packer->Add("query", "1");
@@ -193,6 +194,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			packer->Release();
 		}
 		break;
+	case WM_SHOWWINDOW:
+	{
+		WCHAR key[1024];
+		GetWindowText(hWnd_appkey, key, 1023);
+		WCHAR secret[1024];
+		GetWindowText(hWnd_secret, secret, 1023);
+		WCHAR appid[1024];
+		GetWindowText(hWnd_appid, appid, 1023);
+		std::wstring wappkey(key);
+		std::wstring wsecret(secret);
+		std::wstring wappid(appid);
+		init_finclipsdk(1, wappkey, wsecret);
+	}
+	break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;

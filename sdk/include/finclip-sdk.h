@@ -78,20 +78,21 @@ extern "C"
 	 * @return 0成功，1失败
 	 */
 	DLL_EXPORT int FINSTDMETHODCALLTYPE Initialize(HINSTANCE hinstance, IFinConfigPacker* configpacker);
+
 	/**
-	 * @brief 获取数据打包器
-	 * @detail 获取数据打包器实例
+	 * @brief 函数简介
+	 * @detail 详细说明
 	 *
-	 * @return 返回数据打包器实例
+	 * @param 形参 参数说明
+	 * @param 形参 参数说明
+	 * @return 返回说明
+	 *   @retval 返回值说明
+	 * @note 注解
+	 * @attention 注意
+	 * @warning 警告
+	 * @exception 异常
 	 */
-	DLL_EXPORT IFinPacker* FINSTDMETHODCALLTYPE NewFinPacker();
-	/**
-	 * @brief 获取配置打包器
-	 * @detail 获取配置打包器实例
-	 *
-	 * @return 返回配置打包器实例
-	 */
-	DLL_EXPORT IFinConfigPacker* FINSTDMETHODCALLTYPE NewFinConfigPacker();
+	DLL_EXPORT IPackerFactory* FINSTDMETHODCALLTYPE GetPackerFactory();
 
 	///小程序Api
 	/**打开小程序
