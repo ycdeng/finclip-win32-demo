@@ -128,41 +128,6 @@ public:
 	 */
 	virtual void SetFinger(const char* finger) = 0;
 
-	/**
-	 * @brief 取应用市场类型
-	 * @return 返回应用市场类型
-	 */
-	virtual int GetAppStore() = 0;
-	/**
-	 * @brief 取加密类型
-	 * @return 返回加密类型
-	 */
-	virtual int GetEncryptType() = 0;
-	/**
-	 * @brief 取应用市场域名类型
-	 * @return 返回应用市场域名类型
-	 */
-	virtual const char* GetDomain() = 0;
-	/**
-	 * @brief 取应用市场API前辍类型
-	 * @return 返回应用市场API前辍类型
-	 */
-	virtual const char* GetApiPrefix() = 0;
-	/**
-	 * @brief 取SDK的秘钥类型
-	 * @return 返回SDK的秘钥类型
-	 */
-	virtual const char* GetAppKey() = 0;
-	/**
-	 * @brief 取SDK的私钥类型
-	 * @return 返回SDK的私钥类型
-	 */
-	virtual const char* GetSecret() = 0;
-	/**
-	 * @brief 取SDK指纹信息类型
-	 * @return 返回SDK指纹信息类型
-	 */
-	virtual const char* GetFinger() = 0;
 };
 ///配置打包器接口
 struct IFinConfigPacker : public IKnown
