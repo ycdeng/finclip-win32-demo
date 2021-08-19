@@ -21,6 +21,12 @@ Windows版本FinClip运行时一共有4个文件。
 3. FinClipSDK.lib 链接库文件(x86,x64)
 4. FinClipSDK.dll 动态链接库(x86,x64)
 
+
+**第三方依赖**
+
+* [这里下载最新版本webview2运行库](https://developer.microsoft.com/zh-cn/microsoft-edge/webview2/#download-section)
+* [Visual Studio 运行时](https://support.microsoft.com/en-us/topic/the-latest-supported-visual-c-downloads-2647da03-1eea-4433-9aff-95f26a218cc0)
+
 #### 第一步 引入头文件
 
 ```c++
