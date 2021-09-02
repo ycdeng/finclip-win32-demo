@@ -67,8 +67,10 @@
 
 #include "finclip-api.h"
 
+#ifdef __cplusplus
 extern "C"
 {
+#endif
 	/**
 	 * @brief 初始化SDI信息
 	 * @detail 只需要初始化一次
@@ -94,6 +96,36 @@ extern "C"
 	 */
 	DLL_EXPORT IPackerFactory* FINSTDMETHODCALLTYPE GetPackerFactory();
 
+	/**
+	 * @brief 函数简介
+	 * @detail 详细说明
+	 *
+	 * @param 形参 参数说明
+	 * @param 形参 参数说明
+	 * @return 返回说明
+	 *   @retval 返回值说明
+	 * @note 注解
+	 * @attention 注意
+	 * @warning 警告
+	 * @exception 异常
+	 */
+	DLL_EXPORT HRESULT FINSTDMETHODCALLTYPE CloseAllApplet();
+
+	/**
+	 * @brief 函数简介
+	 * @detail 详细说明
+	 *
+	 * @param 形参 参数说明
+	 * @param 形参 参数说明
+	 * @return 返回说明
+	 *   @retval 返回值说明
+	 * @note 注解
+	 * @attention 注意
+	 * @warning 警告
+	 * @exception 异常
+	 */
+	DLL_EXPORT HRESULT FINSTDMETHODCALLTYPE CleanCache();
+
 	///小程序Api
 	/**打开小程序
 	*
@@ -104,5 +136,7 @@ extern "C"
 	* @return 0表示成功，1表示失败
 	*/
 	DLL_EXPORT int  FINSTDMETHODCALLTYPE StartApplet(int appstore, const char* appid, IFinPacker* param, FinClipSDKCallback callback);
+#ifdef __cplusplus
 }
+#endif
 #endif // !_H_FINCLIPSDK_H_
